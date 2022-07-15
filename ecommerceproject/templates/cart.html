@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+YOUR CART ITEMS ARE READY. PROCEED TO REVIEW THE ITEM AND PLACE THE ORDER
+{% endblock %}
+{% block title %}
+Cart -RBN Tech Pvt. ltd.
+{% endblock %}
+{% block content %}
+{% if not cart_items %}
+<div>
+    <div class="container">
+        <br>
+        <h1 class="text-center my_title" style="font-size:20px;"> Your cart is empty</h1>
+        <br>
+        <p class="text-center my_title"><a href="{% url 'shop:allprodcat' %}" class="btn btn-warning">Shop Now</a></p>
+    </div>
+</div>
+{% else %}
+<div>
+    <div class="text-center">
+        <br>
+                <h1 class="text-center my_title" style="font-size:50px;"> Your cart is ready</h1>
+        <br>
+    </div>
+    <div class="row mx_auto">
+        <div class="col-12 col-mx-12 col-md-12 col-lg-6 text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+                <tr>
+                    <th colspan="5">
+                    Your Items
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in cart_items %}
+                <tr>
+                    <td>
+                        <a href="i.product.get_absolute_url">
+                            <img src="{{i.product.image.url}}" alt="image" style="width:156px; height:156px;" class="float-left rounded custom_image">
+                        </a>
+                    </td>
+                    <td class="text-left">
+                        {{i.product.name}}
+                        <br>
+                        SKU: {{i.product.id}}
+                        <br>
+                        PRICE: ${{i.product.price}}
+                        <br>
+                        QTY: {{i.quantity}}
+                    </td>
+                    <td>
+                        TOTAL:
+                        <br>
+                        {{i.subtotal}}
+                    </td>
+                    <td>
+                        {% if i.quantity < i.product.stock %}
+                        <a href="{% url 'cart:add_cart' i.product.id %}" class="custom_a">
+                           <i class="fa-solid fa-circle-plus custom_icon"></i></a> &nbsp;
+                        <a href="{% url 'cart:minus' i.product.id %}" class="custom_a">
+                            <i class="fa-solid fa-circle-minus custom_icon"></i></a> &nbsp; &nbsp;
+                        <a href="{% url 'cart:delete' i.product.id %}" class="custom_a">
+                            <i class="fa fa-trash custom_icon"></i></a> &nbsp;
+                        {% else %}
+                        <a href="" class="custom_a">
+                            <i class="fa-solid fa-circle-plus custom_icon"></i></a> &nbsp;
+                        <a href="{% url 'cart:minus' i.product.id %}" class="custom_a">
+                            <i class="fa-solid fa-circle-minus custom_icon"></i></a> &nbsp;
+                        <a href="{% url 'cart:delete' i.product.id %}" class="custom_a">
+                            <i class="fa fa-trash custom_icon"></i></a> &nbsp; &nbsp;
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+                <tr>
+                    <th>
+                        PROCEED TO CHECKOUT
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        Your item is ready, please review before payment
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="font-size:18px;"> TOTAL: <h4 style="color:red;"> {{total}}</h4>
+                        <div>
+<!--                            <p class="text-center my_title"><a href="{% url 'shop:allprodcat' %}" class="btn btn-primary">Buy Now</a></p>-->
+<a href="{% url 'shop:allprodcat' %}"><input type="submit" class="btn btn-info" value="Shop More"></a>
+
+<a class="btn btn-danger" href="{% url 'shop:back' %}">Make Payment</a>
+
+                        </div>
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
